@@ -29,35 +29,51 @@ function getFile(file) {
   });
 }
 
-//var p1 = getFile("file1");
-//var p2 = getFile("file2");
-//var p3 = getFile("file3");
+// var p1 = getFile("file1");
+// var p2 = getFile("file2");
+// var p3 = getFile("file3");
 
-//p1
-  //.then(output)
-  //.then(function() {
-    //return p2;
-  //})
-  //.then(output)
-  //.then(function() {
-    //return p3;
-  //})
-  //.then(output)
-  //.then(function() {
-    //output("Completed");
-  //});
+// p1
+//   .then(output)
+//   .then(function() {
+//     return p2;
+//   })
+//   .then(output)
+//   .then(function() {
+//     return p3;
+//   })
+//   .then(output)
+//   .then(function() {
+//     output("Completed");
+//   });
 
-Promise.map(files, getFile)
+// map calls the getFile function for each item in the files array and returns
+// an array of promises for each file
+files.map(getFile)
+  // We start the reduce chain with an empty promise as the default value
+  // than on the next callback takes the value of the first promise in the promise array returned
+  // from map. For each element e call 1st then - the next element in the array, 2nd then - the output function
+  // when the current chain promise resolves
   .reduce(function(chain, filePromise) {
-    return chain
-    .then(function() {
-      return filePromise;
-    })
-    .then(output);
-  }, Promise.resolve())
+      return chain
+        .then(function() {  
+          return filePromise;
+        })
+        .then(output);
+      // return filePromise.then(output);
+    }, Promise.resolve())
   .then(function() {
-    output('Complete ...');
+    output("Complete!");
   });
+
+//console.log(foo);
+
+  // .reduce(function(_, fileP) {
+  //   return Promise.resolve(fileP).then(output);
+  // }, 0)
+  // .then(function() {
+  //   output('Complete ...');
+  // });
 //// The old-n-busted callback way
 
 //function getFile(file) {
